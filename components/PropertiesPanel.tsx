@@ -42,7 +42,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ selectedElement, onUp
         setLocalElement(selectedElement);
     }, [selectedElement]);
 
-    const handleUpdate = (prop: string, value: any, target: 'style' | 'content') => {
+    const handleUpdate = (prop: string, value: string | number | boolean | null | undefined, target: 'style' | 'content') => {
         if (!localElement) return;
         const updatedElement = {
             ...localElement,
@@ -55,7 +55,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ selectedElement, onUp
         onUpdate(updatedElement);
     };
     
-    const handleGlobalUpdate = (prop: keyof GlobalStyles, value: any) => {
+    const handleGlobalUpdate = (prop: keyof GlobalStyles, value: string | number | boolean | null | undefined) => {
         onGlobalStylesUpdate({ ...globalStyles, [prop]: value });
     }
 

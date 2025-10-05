@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EmailRow, PreviewMode, DroppedItem, EmailColumn, Element as EmailElementType } from '../types';
+import { EmailRow, PreviewMode, DroppedItem, Element as EmailElementType } from '../types';
 import EmailElement from './EmailElement';
 
 interface CanvasProps {
@@ -21,7 +21,7 @@ const Canvas: React.FC<CanvasProps> = ({ emailData, onDrop, onSelectElement, sel
     const handleDragOver = (e: React.DragEvent, rowIndex: number, colIndex: number) => {
         e.preventDefault();
         const target = e.currentTarget as HTMLDivElement;
-        const rect = target.getBoundingClientRect();
+        // const rect = target.getBoundingClientRect();
         const children = Array.from(target.children).filter(child => child.classList.contains('email-element-wrapper'));
         
         let position = children.length;
@@ -65,7 +65,7 @@ const Canvas: React.FC<CanvasProps> = ({ emailData, onDrop, onSelectElement, sel
             } else {
                 console.warn("Dropped item has invalid structure:", item);
             }
-        } catch (error) {
+        } catch {
             // This catch block makes the drop handling robust. It prevents crashes
             // when users drop files, text from other windows, or anything that
             // isn't a valid JSON string from our sidebar. This is expected behavior.
