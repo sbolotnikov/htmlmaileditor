@@ -124,10 +124,10 @@ const Header: React.FC<HeaderProps> = ({
         <input type="file" accept=".json,.txt" ref={jsonFileInputRef} onChange={handleJsonFileChange} className="hidden" />
         <button onClick={handleJsonImportClick} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50" title="Import JSON Template"><UploadIcon className="w-4 h-4" /> Import JSON</button>
 
-        <button onClick={handleExportClick} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-brand-secondary border border-transparent rounded-md hover:bg-green-600" title="Export HTML"><DownloadIcon className="w-4 h-4" /> Export HTML</button>
+        <button onClick={handleExportClick} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-green-600 hover:text-white" title="Export HTML"><DownloadIcon className="w-4 h-4" /> Export HTML</button>
 
-        <button onClick={handleJsonExportClick} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-brand-secondary border border-transparent rounded-md hover:bg-green-600" title="Export JSON Template"><DownloadIcon className="w-4 h-4" /> Export JSON</button>
-        
+        <button onClick={handleJsonExportClick} className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-green-600 hover:text-white" title="Export JSON Template"><DownloadIcon className="w-4 h-4" /> Export JSON</button>
+
         <div className="w-px h-6 bg-slate-200 mx-2"></div>
         <button onClick={onToggleCode} className={`p-2 rounded-md ${showCode ? 'bg-indigo-100 text-brand-primary' : 'hover:bg-slate-100 text-slate-500'}`} title={showCode ? 'Hide Code' : 'Show Code'}><CodeIcon /></button>
       </div>
