@@ -16,8 +16,10 @@ const EmailElement: React.FC<EmailElementProps> = ({ element, onSelect, isSelect
     switch (element.type) {
       case 'text':
         return <p style={style} dangerouslySetInnerHTML={{ __html: element.content.text?.replace(/\n/g, '<br />') || '' }} />;
-      case 'image':
-        return <img src={element.content.src} alt={element.content.alt} style={{...style, maxWidth: '100%', height: 'auto', display: 'inline-block'}} />;
+      case 'image': {
+        const { padding, ...imageStyles } = style;
+        return <img src={element.content.src} alt={element.content.alt} style={{...imageStyles, maxWidth: '100%', height: 'auto', display: 'inline-block'}} />;
+      }
       case 'button':
         return <a href={element.content.href} style={{ ...style, display: 'inline-block', textDecoration: 'none', color: style.color || '#ffffff' }}>{element.content.text}</a>;
       case 'divider':
@@ -55,6 +57,11 @@ const EmailElement: React.FC<EmailElementProps> = ({ element, onSelect, isSelect
     wrapperStyle.textAlign = element.style.textAlign as React.CSSProperties['textAlign'];
   }
 
+  // For images, apply padding to the wrapper to mimic email client behavior and fix sizing issues.
+  if (element.type === 'image') {
+    wrapperStyle.padding = element.style.padding;
+  }
+
   return (
     <div
       onClick={onSelect}
@@ -63,7 +70,7 @@ const EmailElement: React.FC<EmailElementProps> = ({ element, onSelect, isSelect
     >
       {renderElement()}
       {isSelected && (
-        <div className="absolute -top-2 -right-2">
+        <div className="absolute -top-2 -right-2 z-10">
            <button onClick={handleDelete} className="bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600">
                <TrashIcon className="w-4 h-4" />
             </button>

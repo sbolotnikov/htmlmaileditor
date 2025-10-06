@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { EmailRow, PreviewMode, DroppedItem, EmailColumn, Element as EmailElementType } from '../types';
+import { EmailRow, PreviewMode, DroppedItem, EmailColumn, Element as EmailElementType, GlobalStyles } from '../types';
 import EmailElement from './EmailElement';
 
 interface CanvasProps {
@@ -9,13 +10,14 @@ interface CanvasProps {
   selectedElementId: string | null;
   onDeleteElement: (id: string) => void;
   previewMode: PreviewMode;
+  globalStyles: GlobalStyles;
 }
 
 const DropIndicator: React.FC = () => (
     <div className="h-1 bg-blue-500 rounded-full my-2 animate-pulse" />
 );
 
-const Canvas: React.FC<CanvasProps> = ({ emailData, onDrop, onSelectElement, selectedElementId, onDeleteElement, previewMode }) => {
+const Canvas: React.FC<CanvasProps> = ({ emailData, onDrop, onSelectElement, selectedElementId, onDeleteElement, previewMode, globalStyles }) => {
     const [dragOver, setDragOver] = useState<{rowIndex: number, colIndex: number, position: number} | null>(null);
 
     const handleDragOver = (e: React.DragEvent, rowIndex: number, colIndex: number) => {
@@ -85,15 +87,24 @@ const Canvas: React.FC<CanvasProps> = ({ emailData, onDrop, onSelectElement, sel
         switch (previewMode) {
             case 'tablet': return '768px';
             case 'mobile': return '375px';
-            default: return '100%';
+            default: return `${globalStyles.width}px`;
         }
+    };
+    
+    const canvasStyle: React.CSSProperties = {
+        width: getPreviewSize(),
+        maxWidth: '100%',
+        background: globalStyles.contentBackground,
+        color: globalStyles.textColor,
+        fontFamily: globalStyles.fontFamily,
+        fontSize: globalStyles.fontSize,
     };
 
     return (
         <div className="w-full flex justify-center">
             <div 
-                className="bg-white shadow-lg transition-all duration-300 mx-auto" 
-                style={{ width: getPreviewSize() }}
+                className="shadow-lg transition-all duration-300 mx-auto" 
+                style={canvasStyle}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, (emailData || []).length -1, 0, 0)} // fallback drop
             >

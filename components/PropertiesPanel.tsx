@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Element, GlobalStyles, SUPPORTED_SOCIAL_PLATFORMS, SocialPlatform } from '../types';
-import { GOOGLE_FONTS } from '../constants';
 import { generateText } from '../services/geminiService';
 import { SparklesIcon, TrashIcon, BoldIcon, AlignLeftIcon, AlignCenterIcon, AlignRightIcon, AlignTopIcon, AlignMiddleIcon, AlignBottomIcon } from './icons';
+import BackgroundPicker from './BackgroundPicker';
+import FontSelector from './FontSelector';
 
 interface PropertiesPanelProps {
   selectedElement: Element | null;
@@ -42,7 +43,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ selectedElement, onUp
         setLocalElement(selectedElement);
     }, [selectedElement]);
 
-    const handleUpdate = (prop: string, value: any, target: 'style' | 'content') => {
+    const handleUpdate = (prop: string, value: string | number | boolean | null | undefined, target: 'style' | 'content') => {
         if (!localElement) return;
         const updatedElement = {
             ...localElement,
@@ -55,7 +56,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ selectedElement, onUp
         onUpdate(updatedElement);
     };
     
-    const handleGlobalUpdate = (prop: keyof GlobalStyles, value: any) => {
+    const handleGlobalUpdate = (prop: keyof GlobalStyles, value: string | number | boolean | null | undefined) => {
         onGlobalStylesUpdate({ ...globalStyles, [prop]: value });
     }
 
@@ -218,13 +219,10 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ selectedElement, onUp
                 { type === 'text' && (
                     <Section title="Typography">
                         <PropertyInput label="Font Family">
-                            <select
+                            <FontSelector
                                 value={(style.fontFamily as string) || globalStyles.fontFamily}
-                                onChange={(e) => handleUpdate('fontFamily', e.target.value, 'style')}
-                                className="w-1/2 p-1 border border-slate-300 rounded-md text-sm"
-                            >
-                                {GOOGLE_FONTS.map(font => <option key={font} value={font}>{font}</option>)}
-                            </select>
+                                onChange={(font) => handleUpdate('fontFamily', font, 'style')}
+                            />
                         </PropertyInput>
                         <div className="flex items-center justify-between">
                             <label className="text-sm text-slate-500">Font Style</label>
@@ -314,13 +312,26 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ selectedElement, onUp
     const renderGlobalProperties = () => {
         return (
             <Section title="Global Styles">
-                <PropertyInput label="Email Background"><ColorInput value={globalStyles.backgroundColor} onChange={val => handleGlobalUpdate('backgroundColor', val)} /></PropertyInput>
-                <PropertyInput label="Content Background"><ColorInput value={globalStyles.contentBackgroundColor} onChange={val => handleGlobalUpdate('contentBackgroundColor', val)} /></PropertyInput>
+                <div className='space-y-2'>
+                    <label className="text-sm text-slate-500 block mb-2">Email Background</label>
+                    <BackgroundPicker 
+                        value={globalStyles.background} 
+                        onChange={val => handleGlobalUpdate('background', val)} 
+                    />
+                </div>
+                <div className='space-y-2 mt-4'>
+                    <label className="text-sm text-slate-500 block mb-2">Content Background</label>
+                    <BackgroundPicker 
+                        value={globalStyles.contentBackground} 
+                        onChange={val => handleGlobalUpdate('contentBackground', val)}
+                    />
+                </div>
                 <PropertyInput label="Content Width"><input type="number" value={globalStyles.width} onChange={e => handleGlobalUpdate('width', parseInt(e.target.value))} className="w-1/2 p-1 border border-slate-300 rounded-md text-sm" /></PropertyInput>
                 <PropertyInput label="Default Font">
-                    <select value={globalStyles.fontFamily} onChange={e => handleGlobalUpdate('fontFamily', e.target.value)} className="w-1/2 p-1 border border-slate-300 rounded-md text-sm">
-                        {GOOGLE_FONTS.map(font => <option key={font} value={font}>{font}</option>)}
-                    </select>
+                    <FontSelector 
+                        value={globalStyles.fontFamily} 
+                        onChange={font => handleGlobalUpdate('fontFamily', font)} 
+                    />
                 </PropertyInput>
             </Section>
         );

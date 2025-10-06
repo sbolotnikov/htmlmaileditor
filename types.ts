@@ -48,8 +48,8 @@ export interface EmailRow {
 }
 
 export interface GlobalStyles {
-  backgroundColor: string;
-  contentBackgroundColor: string;
+  background: string;
+  contentBackground: string;
   fontFamily: string;
   fontSize: string;
   textColor: string;

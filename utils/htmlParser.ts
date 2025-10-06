@@ -23,14 +23,30 @@ export const parseHtml = (html: string): { rows: EmailRow[], styles: GlobalStyle
 
     // Try to find global styles
     const body = doc.body;
-    styles.backgroundColor = body.style.backgroundColor || DEFAULT_GLOBAL_STYLES.backgroundColor;
+    // Prioritize backgroundImage for gradients as browsers often split the 'background' shorthand.
+    const bodyBgImage = body.style.backgroundImage;
+    if (bodyBgImage && bodyBgImage.includes('gradient')) {
+        styles.background = bodyBgImage;
+    } else {
+        styles.background = body.style.background || body.style.backgroundColor || DEFAULT_GLOBAL_STYLES.background;
+    }
+    
     const container = doc.querySelector('.container') as HTMLElement;
     if (container) {
-        styles.contentBackgroundColor = container.style.backgroundColor || DEFAULT_GLOBAL_STYLES.contentBackgroundColor;
-        styles.fontFamily = container.style.fontFamily || DEFAULT_GLOBAL_STYLES.fontFamily;
-        styles.textColor = container.style.color || DEFAULT_GLOBAL_STYLES.textColor;
+        const tbody = container.querySelector('tbody');
+        if (tbody) {
+            const contentBgImage = tbody.style.backgroundImage;
+            if (contentBgImage && contentBgImage.includes('gradient')) {
+                 styles.contentBackground = contentBgImage;
+            } else {
+                styles.contentBackground = tbody.style.background || tbody.style.backgroundColor || DEFAULT_GLOBAL_STYLES.contentBackground;
+            }
+            styles.fontFamily = tbody.style.fontFamily || DEFAULT_GLOBAL_STYLES.fontFamily;
+            styles.textColor = tbody.style.color || DEFAULT_GLOBAL_STYLES.textColor;
+        }
         styles.width = parseInt(container.style.maxWidth || '600', 10);
     }
+
 
     // This query targets the top-level rows of the main content table.
     const topLevelRows = container?.querySelectorAll<HTMLTableRowElement>(':scope > tbody > tr');
@@ -88,7 +104,7 @@ export const parseHtml = (html: string): { rows: EmailRow[], styles: GlobalStyle
                                 type: 'social',
                                 content: { links },
                                 style: { 
-                                    padding: wrapperTd?.style.padding || '',
+                                    padding: wrapperTd?.style.padding ?? '',
                                     textAlign: alignment || 'center'
                                 }
                             };
@@ -109,15 +125,12 @@ export const parseHtml = (html: string): { rows: EmailRow[], styles: GlobalStyle
                         parsedElement = { 
                             id: `el-import-${elIndex}-${Date.now()}`, 
                             type: 'button', 
-                            content: { 
-                                href: a.getAttribute('href') || '#', 
-                                text: buttonText 
-                            }, 
+                            content: { href: a.getAttribute('href') || '#', text: buttonText }, 
                             style: { 
-                                backgroundColor: buttonTd?.style.backgroundColor || '', 
-                                color: buttonSpan?.style.color || '', 
-                                padding: buttonTd?.style.padding || '', 
-                                borderRadius: buttonTd?.style.borderRadius || '' 
+                                backgroundColor: buttonTd?.style.backgroundColor ?? '', 
+                                color: buttonSpan?.style.color ?? '', 
+                                padding: buttonTd?.style.padding ?? '', 
+                                borderRadius: buttonTd?.style.borderRadius ?? '' 
                             } 
                         };
                         if (alignment && parsedElement) parsedElement.style.textAlign = alignment;

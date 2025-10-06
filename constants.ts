@@ -1,4 +1,3 @@
-
 import { ElementType, GlobalStyles, SocialPlatform } from './types';
 
 export const COMPONENT_TYPES: { name: string; type: ElementType }[] = [
@@ -25,8 +24,8 @@ export const LAYOUT_TYPES: { name: string; columns: number; widths: string[] }[]
 ];
 
 export const DEFAULT_GLOBAL_STYLES: GlobalStyles = {
-  backgroundColor: '#f1f5f9', // slate-100
-  contentBackgroundColor: '#ffffff',
+  background: '#f1f5f9', // slate-100
+  contentBackground: '#ffffff',
   fontFamily: 'Arial, sans-serif',
   fontSize: '16px',
   textColor: '#1e293b', // slate-800
@@ -44,7 +43,48 @@ export const SOCIAL_PLATFORM_COLORS: { [key in SocialPlatform]: string } = {
   Email: '#805AD5',
 };
 
+export const SOCIAL_ICON_URLS: { [key in SocialPlatform]: string } = {
+  Facebook: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-6/1024/facebook-1024.png',
+  Twitter: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-long-shadow/1024/twitter-1024.png',
+  Instagram: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-6/1024/instagram-1024.png',
+  LinkedIn: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-long-shadow/1024/linkedin-1024.png',
+  YouTube: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-long-shadow/1024/youtube-1024.png',
+  Pinterest: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-long-shadow/1024/pinterest-1024.png',
+  Website: 'https://cdn3.iconfinder.com/data/icons/social-media-circle-long-shadow/1024/longShadow-1024.png',
+  Email: 'https://cdn0.iconfinder.com/data/icons/social-media-circle-long-shadow/1024/mail-1024.png',
+};
+
 export const GOOGLE_FONTS = [
-  'Arial', 'Verdana', 'Georgia', 'Times New Roman', 'Courier New', // Web-safe
-  'Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Oswald', 'Source Sans Pro', 'Raleway'
+  // Web Safe
+  'Arial',
+  'Verdana',
+  'Georgia',
+  'Times New Roman',
+  'Courier New',
+  // Sans-Serif
+  'Roboto',
+  'Open Sans',
+  'Lato',
+  'Montserrat',
+  'Source Sans Pro',
+  'Raleway',
+  'Poppins',
+  'Nunito Sans',
+  'Inter',
+  'Work Sans',
+  // Serif
+  'Merriweather',
+  'Playfair Display',
+  'Lora',
+  'PT Serif',
+  // Display
+  'Oswald',
+  'Pacifico',
+  'Lobster',
+  'Anton',
+  'Bebas Neue',
+  // Monospace
+  'Inconsolata',
+  'Source Code Pro',
+  'Fira Code'
 ];
